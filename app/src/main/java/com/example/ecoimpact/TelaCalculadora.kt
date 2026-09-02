@@ -133,7 +133,7 @@ fun TelaCalculadora(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Este valor é uma estimativa baseada em fatores de emissão médios por quilômetro rodado para cada tipo de transporte.",
+                        text = "Este valor é uma estimativa baseada em fatores de emissão medidos por quilômetros rodados para cada tipo de transporte.",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray
                     )

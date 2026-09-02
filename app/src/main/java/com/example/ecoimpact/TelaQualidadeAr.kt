@@ -149,14 +149,26 @@ fun TelaQualidadeDoAr(
                     shape = RoundedCornerShape(24.dp),
                     border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
                 ) {
-                    Column(modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(
                             text = info.classification,
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            color = levelColor
+                            color = levelColor,
+                            textAlign = TextAlign.Center
                         )
-                        Text(text = "AQI: ${info.aqi}", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "AQI: ${info.aqi}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
                         
                         if (info.level != AirQualityLevel.GOOD && info.level != AirQualityLevel.FAIR) {
                             Spacer(modifier = Modifier.height(20.dp))
@@ -182,7 +194,7 @@ fun TelaQualidadeDoAr(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // POLLUTANTS SECTION
+
                 Text(
                     text = "Principais Poluentes",
                     style = MaterialTheme.typography.titleMedium,
@@ -200,7 +212,7 @@ fun TelaQualidadeDoAr(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // EXPLANATION SECTION
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
