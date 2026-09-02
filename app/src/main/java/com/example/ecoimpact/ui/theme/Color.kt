@@ -2,10 +2,13 @@ package com.example.ecoimpact.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val EcoGreenPrimary = Color(0xFF1B5E20)
+val EcoGreenSecondary = Color(0xFF4CAF50)
+val EcoGreenTertiary = Color(0xFFC8E6C9)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val EcoBackground = Color(0xFFFFFFFF)
+val EcoSurface = Color(0xFFF8F9FA)
+val EcoOnSurface = Color(0xFF212529)
+
+val White = Color(0xFFFFFFFF)
+val Black = Color(0xFF000000)

@@ -4,90 +4,84 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.ecoimpact.ui.theme.EcoImpactTheme
-import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             EcoImpactTheme {
-                TelaInicial()
+                AppNavigation()
             }
         }
     }
 }
 
 @Composable
-fun TelaInicial() {
+fun AppNavigation() {
+    val navController = rememberNavController()
 
-    var mostrarSplash by remember {
-        mutableStateOf(true)
-    }
-
-    var telaAtual by remember {
-        mutableStateOf("home")
-    }
-
-    LaunchedEffect(Unit) {
-        delay(2000)
-        mostrarSplash = false
-    }
-
-    if (mostrarSplash) {
-
-        TelaSplash()
-
-    } else {
-
-        when (telaAtual) {
-
-            "home" -> {
-                TelaHome(
-                    onAbrirQualidadeDoAr = {
-                        telaAtual = "qualidade"
-                    },
-
-                    onAbrirCalculadora = {
-                        telaAtual = "calculadora"
-                    },
-
-                    onAbrirImpacto = {
-                        telaAtual = "impacto"
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+            TelaSplash(
+                onFinish = {
+                    navController.navigate("home") {
+                        popUpTo("splash") { inclusive = true }
                     }
-                )
-            }
+                }
+            )
+        }
 
-            "qualidade" -> {
-                TelaQualidadeDoAr(
-                    onVoltar = {
-                        telaAtual = "home"
-                    }
-                )
-            }
+        composable("home") {
+            TelaHome(
+                onAbrirQualidadeDoAr = { cityIndex ->
+                    navController.navigate("qualidade/$cityIndex")
+                },
+                onAbrirCalculadora = { transportIndex, distancia ->
+                    navController.navigate("calculadora/$transportIndex/$distancia")
+                },
+                onAbrirImpacto = {
+                    navController.navigate("impacto")
+                }
+            )
+        }
 
-            "calculadora" -> {
-                TelaCalculadora(
-                    onVoltar = {
-                        telaAtual = "home"
-                    }
-                )
-            }
+        composable(
+            route = "qualidade/{cityIndex}",
+            arguments = listOf(navArgument("cityIndex") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val cityIndex = backStackEntry.arguments?.getInt("cityIndex") ?: 0
+            TelaQualidadeDoAr(
+                cityIndex = cityIndex,
+                onVoltar = { navController.popBackStack() }
+            )
+        }
 
-            "impacto" -> {
-                TelaImpacto(
-                    onVoltar = {
-                        telaAtual = "home"
-                    }
-                )
-            }
+        composable(
+            route = "calculadora/{transportIndex}/{distancia}",
+            arguments = listOf(
+                navArgument("transportIndex") { type = NavType.IntType },
+                navArgument("distancia") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val transportIndex = backStackEntry.arguments?.getInt("transportIndex") ?: 0
+            val distancia = backStackEntry.arguments?.getString("distancia") ?: "0"
+            TelaCalculadora(
+                transportIndex = transportIndex,
+                distanciaInput = distancia,
+                onVoltar = { navController.popBackStack() }
+            )
+        }
+
+        composable("impacto") {
+            TelaImpacto(
+                onVoltar = { navController.popBackStack() }
+            )
         }
     }
 }
